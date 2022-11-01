@@ -6,4 +6,5 @@ public class AuthorizationServiceConstants {
     public static final String BASE_PATH = "/authorization/service";
     public static final String ACCOUNT_PATH = BASE_PATH + "/account";
     public static final String ACCOUNT_CREATE_PATH = ACCOUNT_PATH + "/create";
+    public static final String ACCOUNT_REMOVE_PATH = ACCOUNT_PATH + "/remove";
 }
