@@ -16,7 +16,8 @@ import static com.s4m1d.glw.authorization.service.black.box.tests.constant.Autho
 public class AccountTest {
     private static final String USER_NAME = "JohnDoe";
     private static final String PASSWORD = "iHateSins_101";
-    private static final String TOKEN = "asdf-wert-yuio-zxcv";
+    private static final String RIGHT_TOKEN = "asdf-wert-yuio-zxcv";
+    private static final String WRONG_TOKEN = "qwer-asdf-jklo-poiu";
 
     @BeforeMethod
     public void setUp(){
@@ -60,7 +61,7 @@ public class AccountTest {
     public void account_removal_test() throws JsonProcessingException {
         //prepare data
         AccountRemovalRequestBody requestBody = AccountRemovalRequestBody.builder()
-                .token(TOKEN)
+                .token(WRONG_TOKEN)
                 .build();
 
         //request service
@@ -72,6 +73,24 @@ public class AccountTest {
 
         //assertions
         AccountCreationResponseBody responseBody = response.body().as(AccountCreationResponseBody.class);
+        Assert.assertFalse(responseBody.isSuccess());
+        Assert.assertEquals(responseBody.getErrorCode(), "AUTH_01");
+        Assert.assertEquals(responseBody.getMessage(), "No active session with this token");
+
+        //prepare data
+        requestBody = AccountRemovalRequestBody.builder()
+                .token(RIGHT_TOKEN)
+                .build();
+
+        //request service
+        strRequestBody = ObjectToStringConverter.convert(requestBody);
+        System.out.printf("sending request to %s with body %s%n", ACCOUNT_REMOVE_PATH, strRequestBody);
+        response = RestAssured.given().header("content-type", "application/json").body(strRequestBody).post(ACCOUNT_REMOVE_PATH).then().statusCode(200).extract().response();
+        System.out.println("Response:");
+        response.prettyPrint();
+
+        //assertions
+        responseBody = response.body().as(AccountCreationResponseBody.class);
         Assert.assertTrue(responseBody.isSuccess());
 
         //request service
