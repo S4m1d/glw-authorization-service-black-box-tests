@@ -7,8 +7,9 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountCreationResponseBody {
+public class SignInResponseBody {
     private boolean success;
+    private String token;
     private String errorCode;
     private String message;
 }

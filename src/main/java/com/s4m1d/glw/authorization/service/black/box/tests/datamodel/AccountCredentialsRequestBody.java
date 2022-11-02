@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountCreationRequestBody {
+public class AccountCredentialsRequestBody {
     private String userName;
-    private String pwd;
+    private String password;
 }
